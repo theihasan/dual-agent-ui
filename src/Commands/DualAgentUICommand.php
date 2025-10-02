@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Ihasan\DualAgentUI\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class DualAgentUICommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'dual-agent-ui';
 
     public $description = 'My command';
 
