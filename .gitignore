@@ -4,6 +4,7 @@ composer.lock
 
 # Frontend Assets
 /node_modules
+/dist
 
 # Logs
 npm-debug.log
@@ -30,3 +31,5 @@ phpstan.neon
 testbench.yaml
 /docs
 /coverage
+.DS_Store
+.vite
