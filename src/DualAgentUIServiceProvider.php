@@ -20,6 +20,7 @@ class DualAgentUIServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_dual_agent_ui_table')
+            ->hasRoutes(['dual-agent-ui'])
             ->hasCommand(DualAgentUICommand::class);
     }
 }
