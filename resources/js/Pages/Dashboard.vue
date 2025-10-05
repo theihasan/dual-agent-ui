@@ -1,5 +1,6 @@
 <template>
-  <div class="dashboard">
+  <div class="dual-agent-ui">
+    <div class="dashboard">
     <h1>Dashboard</h1>
 
     <div class="stats-grid">
@@ -16,6 +17,7 @@
           {{ activity.action }} - {{ activity.timestamp }}
         </li>
       </ul>
+    </div>
     </div>
   </div>
 </template>
