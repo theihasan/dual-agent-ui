@@ -20,7 +20,6 @@
     
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Overview</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem v-for="item in menuItems" :key="item.title">
@@ -28,6 +27,7 @@
                 <a :href="item.url">
                   <component :is="item.icon" />
                   <span>{{ item.title }}</span>
+                  <SidebarMenuBadge v-if="item.badge">{{ item.badge }}</SidebarMenuBadge>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -36,10 +36,10 @@
       </SidebarGroup>
       
       <SidebarGroup>
-        <SidebarGroupLabel>Analytics</SidebarGroupLabel>
+        <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            <SidebarMenuItem v-for="item in analyticsItems" :key="item.title">
+            <SidebarMenuItem v-for="item in monitoringItems" :key="item.title">
               <SidebarMenuButton asChild>
                 <a :href="item.url">
                   <component :is="item.icon" />
@@ -62,6 +62,14 @@
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild>
+            <a href="#" class="font-medium">
+              <HelpCircle class="size-4" />
+              <span>Support</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarFooter>
   </Sidebar>
@@ -76,7 +84,8 @@ import {
   Clock, 
   TrendingUp,
   Users,
-  Settings 
+  Settings,
+  HelpCircle 
 } from 'lucide-vue-next'
 
 import {
@@ -90,6 +99,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuBadge,
 } from '@/components/ui/sidebar'
 
 const menuItems = [
@@ -100,32 +110,28 @@ const menuItems = [
     isActive: true,
   },
   {
-    title: "Requests",
+    title: "Issues",
+    url: "#",
+    icon: AlertTriangle,
+    badge: "20"
+  },
+  {
+    title: "Activity",
     url: "#",
     icon: Activity,
   },
-  {
-    title: "Exceptions",
-    url: "#",
-    icon: AlertTriangle,
-  },
-  {
-    title: "Performance",
-    url: "#",
-    icon: TrendingUp,
-  },
 ]
 
-const analyticsItems = [
+const monitoringItems = [
   {
-    title: "Response Times",
-    url: "#",
-    icon: Clock,
-  },
-  {
-    title: "User Activity",
+    title: "Users",
     url: "#",
     icon: Users,
+  },
+  {
+    title: "Logs",
+    url: "#",
+    icon: Clock,
   },
 ]
 </script>
