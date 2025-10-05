@@ -11,7 +11,7 @@ class DashboardRouteTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Set up Inertia testing
         $this->app['config']->set('inertia.testing.ensure_pages_exist', false);
     }
@@ -20,7 +20,7 @@ class DashboardRouteTest extends TestCase
     public function dashboard_route_exists(): void
     {
         $response = $this->get('/agent-dashboard');
-        
+
         $response->assertStatus(200);
     }
 
@@ -28,7 +28,7 @@ class DashboardRouteTest extends TestCase
     public function dashboard_route_returns_inertia_response(): void
     {
         $response = $this->get('/agent-dashboard');
-        
+
         $response->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
         );
@@ -38,7 +38,7 @@ class DashboardRouteTest extends TestCase
     public function dashboard_route_provides_stats_data(): void
     {
         $response = $this->get('/agent-dashboard');
-        
+
         $response->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
             ->has('stats')
@@ -57,7 +57,7 @@ class DashboardRouteTest extends TestCase
     public function dashboard_route_provides_recent_activities(): void
     {
         $response = $this->get('/agent-dashboard');
-        
+
         $response->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
             ->has('recentActivities')
@@ -92,7 +92,7 @@ class DashboardRouteTest extends TestCase
     {
         $routes = app('router')->getRoutes();
         $dashboardRoute = $routes->getByName('dashboard');
-        
+
         $this->assertContains('GET', $dashboardRoute->methods());
         $this->assertNotContains('POST', $dashboardRoute->methods());
         $this->assertNotContains('PUT', $dashboardRoute->methods());
@@ -103,7 +103,7 @@ class DashboardRouteTest extends TestCase
     public function dashboard_route_responds_to_json_requests(): void
     {
         $response = $this->getJson('/agent-dashboard');
-        
+
         // Should return 200 and have Inertia structure
         $response->assertStatus(200);
         $response->assertHeader('X-Inertia', 'true');
@@ -114,7 +114,7 @@ class DashboardRouteTest extends TestCase
     {
         $routes = app('router')->getRoutes();
         $dashboardRoute = $routes->getByName('dashboard');
-        
+
         $action = $dashboardRoute->getAction();
         $this->assertEquals('Ihasan\DualAgentUI\Http\Controllers\DashboardController', $action['controller']);
     }
@@ -125,17 +125,17 @@ class DashboardRouteTest extends TestCase
         // First request
         $response1 = $this->get('/agent-dashboard');
         $response1->assertStatus(200);
-        
+
         // Second request
         $response2 = $this->get('/agent-dashboard');
         $response2->assertStatus(200);
-        
+
         // Both should return the same data
         $response1->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
             ->where('stats.totalRequests', 1234)
         );
-        
+
         $response2->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
             ->where('stats.totalRequests', 1234)
@@ -147,9 +147,9 @@ class DashboardRouteTest extends TestCase
     {
         $response = $this->get('/agent-dashboard', [
             'X-Inertia' => 'true',
-            'X-Inertia-Version' => '1.0'
+            'X-Inertia-Version' => '1.0',
         ]);
-        
+
         $response->assertStatus(200);
         $response->assertHeader('X-Inertia', 'true');
     }

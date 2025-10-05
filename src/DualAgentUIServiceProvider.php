@@ -2,12 +2,12 @@
 
 namespace Ihasan\DualAgentUI;
 
+use Ihasan\DualAgentUI\Console\Commands\PublishAssetsCommand;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
-use Ihasan\DualAgentUI\Console\Commands\PublishAssetsCommand;
-use Inertia\Inertia;
 
 class DualAgentUIServiceProvider extends PackageServiceProvider
 {
@@ -19,10 +19,10 @@ class DualAgentUIServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_dual_agent_ui_table')
             ->hasCommand(PublishAssetsCommand::class)
-            ->hasInstallCommand(function(InstallCommand $command) {
+            ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
-                    ->startWith(function(InstallCommand $command) {
+                    ->startWith(function (InstallCommand $command) {
                         $command->info('Publishing Dual Agent UI assets...');
                         $command->call('vendor:publish', [
                             '--tag' => 'dual-agent-ui-assets',
@@ -30,11 +30,11 @@ class DualAgentUIServiceProvider extends PackageServiceProvider
                         ]);
                     })
                     ->askToStarRepoOnGitHub('theihasan/dual-agent-ui')
-                    ->endWith(function(InstallCommand $command) {
+                    ->endWith(function (InstallCommand $command) {
                         $command->info('');
                         $command->info('Dual Agent UI installed successfully!');
                         $command->info('');
-                        $command->line('📊 Access dashboard at: ' . config('app.url') . '/' . config('dual-agent-ui.path', 'agent-dashboard'));
+                        $command->line('📊 Access dashboard at: '.config('app.url').'/'.config('dual-agent-ui.path', 'agent-dashboard'));
                         $command->info('');
                         $command->comment('You can now access the dashboard!');
                     });
@@ -77,7 +77,4 @@ class DualAgentUIServiceProvider extends PackageServiceProvider
     {
         // Any custom registration logic here
     }
-
-
-
 }

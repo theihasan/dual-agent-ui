@@ -2,10 +2,10 @@
 
 namespace Ihasan\DualAgentUI\Tests;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
 use Ihasan\DualAgentUI\Commands\DualAgentUICommand;
 use Ihasan\DualAgentUI\DualAgentUIServiceProvider;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
 
 class DualAgentUIServiceProviderTest extends TestCase
@@ -27,7 +27,7 @@ class DualAgentUIServiceProviderTest extends TestCase
     {
         $routes = Route::getRoutes();
         $agentDashboardRoute = $routes->getByName('dashboard');
-        
+
         $this->assertNotNull($agentDashboardRoute);
         $this->assertEquals('GET', $agentDashboardRoute->methods()[0]);
         $this->assertEquals('agent-dashboard', $agentDashboardRoute->uri());
@@ -87,16 +87,16 @@ class DualAgentUIServiceProviderTest extends TestCase
     #[Test]
     public function config_file_has_expected_structure(): void
     {
-        $config = include __DIR__ . '/../config/dual-agent-ui.php';
-        
+        $config = include __DIR__.'/../config/dual-agent-ui.php';
+
         $this->assertIsArray($config);
     }
 
     #[Test]
     public function app_blade_view_contains_inertia_setup(): void
     {
-        $viewContent = File::get(__DIR__ . '/../resources/views/app.blade.php');
-        
+        $viewContent = File::get(__DIR__.'/../resources/views/app.blade.php');
+
         $this->assertStringContainsString('@inertia', $viewContent);
         $this->assertStringContainsString('@inertiaHead', $viewContent);
         $this->assertStringContainsString('@vite', $viewContent);
@@ -106,8 +106,8 @@ class DualAgentUIServiceProviderTest extends TestCase
     #[Test]
     public function dashboard_vue_component_exists_and_has_expected_structure(): void
     {
-        $vueContent = File::get(__DIR__ . '/../resources/js/Pages/Dashboard.vue');
-        
+        $vueContent = File::get(__DIR__.'/../resources/js/Pages/Dashboard.vue');
+
         $this->assertStringContainsString('<template>', $vueContent);
         $this->assertStringContainsString('<script setup>', $vueContent);
         $this->assertStringContainsString('defineProps', $vueContent);
@@ -119,8 +119,8 @@ class DualAgentUIServiceProviderTest extends TestCase
     #[Test]
     public function inertia_middleware_stub_has_flash_messages(): void
     {
-        $middlewareContent = File::get(__DIR__ . '/../stubs/HandleInertiaRequests.php');
-        
+        $middlewareContent = File::get(__DIR__.'/../stubs/HandleInertiaRequests.php');
+
         $this->assertStringContainsString('flash', $middlewareContent);
         $this->assertStringContainsString('success', $middlewareContent);
         $this->assertStringContainsString('error', $middlewareContent);
@@ -132,8 +132,8 @@ class DualAgentUIServiceProviderTest extends TestCase
     #[Test]
     public function vite_config_stub_has_vue_support(): void
     {
-        $viteContent = File::get(__DIR__ . '/../stubs/vite.config.js');
-        
+        $viteContent = File::get(__DIR__.'/../stubs/vite.config.js');
+
         $this->assertStringContainsString("import vue from '@vitejs/plugin-vue'", $viteContent);
         $this->assertStringContainsString('vue()', $viteContent);
         $this->assertStringContainsString('laravel-vite-plugin', $viteContent);
@@ -142,8 +142,8 @@ class DualAgentUIServiceProviderTest extends TestCase
     #[Test]
     public function app_js_stub_has_inertia_setup(): void
     {
-        $appJsContent = File::get(__DIR__ . '/../stubs/app.js');
-        
+        $appJsContent = File::get(__DIR__.'/../stubs/app.js');
+
         $this->assertStringContainsString("import { createApp, h } from 'vue'", $appJsContent);
         $this->assertStringContainsString("import { createInertiaApp } from '@inertiajs/vue3'", $appJsContent);
         $this->assertStringContainsString('createInertiaApp', $appJsContent);
@@ -153,9 +153,9 @@ class DualAgentUIServiceProviderTest extends TestCase
     #[Test]
     public function package_json_stub_has_required_dependencies(): void
     {
-        $packageJsonContent = File::get(__DIR__ . '/../stubs/package.json.stub');
+        $packageJsonContent = File::get(__DIR__.'/../stubs/package.json.stub');
         $packageData = json_decode($packageJsonContent, true);
-        
+
         $this->assertArrayHasKey('devDependencies', $packageData);
         $this->assertArrayHasKey('@inertiajs/vue3', $packageData['devDependencies']);
         $this->assertArrayHasKey('@vitejs/plugin-vue', $packageData['devDependencies']);
