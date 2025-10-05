@@ -1,7 +1,0 @@
-{
-    "devDependencies": {
-        "@inertiajs/vue3": "^2.2.4",
-        "@vitejs/plugin-vue": "^5.0.0",
-        "vue": "^3.4.0"
-    }
-}
