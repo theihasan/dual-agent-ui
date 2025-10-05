@@ -1,29 +1,46 @@
 <template>
   <div class="dual-agent-ui">
-    <div class="dashboard">
-    <h1>Dashboard</h1>
+    <div class="container mx-auto p-6 space-y-6">
+      <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
 
-    <div class="stats-grid">
-      <div class="stat-card" v-for="(value, key) in stats" :key="key">
-        <h3>{{ formatKey(key) }}</h3>
-        <p>{{ value }}{{ key === 'errorRate' ? '%' : key === 'uptime' ? '%' : '' }}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card v-for="(value, key) in stats" :key="key">
+          <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle class="text-sm font-medium">
+              {{ formatKey(key) }}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div class="text-2xl font-bold">
+              {{ value }}{{ key === 'errorRate' ? '%' : key === 'uptime' ? '%' : '' }}
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </div>
 
-    <div class="recent-activities">
-      <h2>Recent Activities</h2>
-      <ul>
-        <li v-for="activity in recentActivities" :key="activity.id">
-          {{ activity.action }} - {{ activity.timestamp }}
-        </li>
-      </ul>
-    </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activities</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div class="space-y-4">
+            <div 
+              v-for="activity in recentActivities" 
+              :key="activity.id"
+              class="flex items-center justify-between p-3 rounded-lg border bg-muted/30"
+            >
+              <span class="font-medium">{{ activity.action }}</span>
+              <span class="text-sm text-muted-foreground">{{ activity.timestamp }}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 defineProps({
   stats: Object,
@@ -35,47 +52,3 @@ const formatKey = (key) => {
 }
 </script>
 
-<style scoped>
-.dashboard {
-  padding: 20px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.stat-card {
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.stat-card h3 {
-  margin: 0 0 10px 0;
-  color: #666;
-}
-
-.stat-card p {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.recent-activities h2 {
-  margin-bottom: 20px;
-}
-
-.recent-activities ul {
-  list-style: none;
-  padding: 0;
-}
-
-.recent-activities li {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-</style>
