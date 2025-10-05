@@ -12,19 +12,19 @@ class ExceptionService
         $exceptions = $this->getMockExceptions();
 
         // Apply filters
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $exceptions = array_filter($exceptions, function ($exception) use ($filters) {
                 return $exception['status'] === $filters['status'];
             });
         }
 
-        if (!empty($filters['environment'])) {
+        if (! empty($filters['environment'])) {
             $exceptions = array_filter($exceptions, function ($exception) use ($filters) {
                 return $exception['environment'] === $filters['environment'];
             });
         }
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = strtolower($filters['search']);
             $exceptions = array_filter($exceptions, function ($exception) use ($search) {
                 return strpos(strtolower($exception['message']), $search) !== false ||
@@ -46,7 +46,7 @@ class ExceptionService
     public function getExceptionById(int $id): ?array
     {
         $exceptions = $this->getMockExceptions();
-        
+
         foreach ($exceptions as $exception) {
             if ($exception['id'] === $id) {
                 return $exception;
@@ -62,25 +62,25 @@ class ExceptionService
     public function getExceptionStats(): array
     {
         $exceptions = $this->getMockExceptions();
-        
+
         $stats = [
             'total' => count($exceptions),
             'open' => 0,
             'resolved' => 0,
             'ignored' => 0,
             'environments' => [],
-            'most_common' => []
+            'most_common' => [],
         ];
 
         $classCount = [];
-        
+
         foreach ($exceptions as $exception) {
             $stats[$exception['status']]++;
-            
-            if (!in_array($exception['environment'], $stats['environments'])) {
+
+            if (! in_array($exception['environment'], $stats['environments'])) {
                 $stats['environments'][] = $exception['environment'];
             }
-            
+
             $class = $exception['class'];
             $classCount[$class] = ($classCount[$class] ?? 0) + 1;
         }
@@ -114,8 +114,8 @@ class ExceptionService
                 'context' => [
                     'user_id' => 1234,
                     'payment_id' => 'pay_abc123',
-                    'amount' => 99.99
-                ]
+                    'amount' => 99.99,
+                ],
             ],
             [
                 'id' => 2,
@@ -132,8 +132,8 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'email' => 'user@example.com',
-                    'registration_source' => 'web'
-                ]
+                    'registration_source' => 'web',
+                ],
             ],
             [
                 'id' => 3,
@@ -150,8 +150,8 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'file_path' => '/var/www/html/storage/temp/file_12345.pdf',
-                    'operation' => 'cleanup'
-                ]
+                    'operation' => 'cleanup',
+                ],
             ],
             [
                 'id' => 4,
@@ -168,8 +168,8 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'recipient' => 'user@example.com',
-                    'email_type' => 'welcome'
-                ]
+                    'email_type' => 'welcome',
+                ],
             ],
             [
                 'id' => 5,
@@ -186,8 +186,8 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'batch_id' => 'batch_xyz789',
-                    'job_class' => 'App\Jobs\ProcessNotification'
-                ]
+                    'job_class' => 'App\Jobs\ProcessNotification',
+                ],
             ],
             [
                 'id' => 6,
@@ -204,8 +204,8 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'headers' => null,
-                    'request_path' => '/api/v1/users'
-                ]
+                    'request_path' => '/api/v1/users',
+                ],
             ],
             [
                 'id' => 7,
@@ -222,8 +222,8 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'component' => 'livewire.user-table',
-                    'view_path' => 'dashboard'
-                ]
+                    'view_path' => 'dashboard',
+                ],
             ],
             [
                 'id' => 8,
@@ -240,9 +240,9 @@ class ExceptionService
                 'stack_trace' => 'Full stack trace would be here...',
                 'context' => [
                     'host' => 'localhost',
-                    'database' => 'production_db'
-                ]
-            ]
+                    'database' => 'production_db',
+                ],
+            ],
         ];
     }
 }

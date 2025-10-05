@@ -19,11 +19,11 @@ class HandleDualAgentInertiaRequests extends Middleware
     {
         $cssPath = public_path('vendor/dual-agent-ui/build/app.css');
         $jsPath = public_path('vendor/dual-agent-ui/build/app.js');
-        
+
         if (file_exists($cssPath) && file_exists($jsPath)) {
-            return md5_file($cssPath) . md5_file($jsPath);
+            return md5_file($cssPath).md5_file($jsPath);
         }
-        
+
         return parent::version($request);
     }
 

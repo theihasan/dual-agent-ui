@@ -10,16 +10,16 @@ class DualAgentUICommandTest extends TestCase
     #[Test]
     public function it_has_correct_signature(): void
     {
-        $command = new DualAgentUICommand();
-        
+        $command = new DualAgentUICommand;
+
         $this->assertEquals('dual-agent-ui', $command->signature);
     }
 
     #[Test]
     public function it_has_description(): void
     {
-        $command = new DualAgentUICommand();
-        
+        $command = new DualAgentUICommand;
+
         $this->assertNotEmpty($command->description);
         $this->assertEquals('My command', $command->description);
     }
@@ -44,7 +44,7 @@ class DualAgentUICommandTest extends TestCase
     public function handle_method_returns_integer(): void
     {
         // Test that the command exists and is callable
-        $command = new DualAgentUICommand();
+        $command = new DualAgentUICommand;
         $this->assertTrue(method_exists($command, 'handle'));
         $this->assertTrue(is_callable([$command, 'handle']));
     }
@@ -54,7 +54,7 @@ class DualAgentUICommandTest extends TestCase
     {
         $kernel = $this->app->make('Illuminate\Contracts\Console\Kernel');
         $commands = $kernel->all();
-        
+
         $this->assertArrayHasKey('dual-agent-ui', $commands);
         $this->assertInstanceOf(DualAgentUICommand::class, $commands['dual-agent-ui']);
     }
@@ -62,8 +62,8 @@ class DualAgentUICommandTest extends TestCase
     #[Test]
     public function it_extends_laravel_command(): void
     {
-        $command = new DualAgentUICommand();
-        
+        $command = new DualAgentUICommand;
+
         $this->assertInstanceOf(\Illuminate\Console\Command::class, $command);
     }
 
@@ -71,7 +71,7 @@ class DualAgentUICommandTest extends TestCase
     public function command_can_be_called_via_artisan(): void
     {
         $result = $this->artisan('dual-agent-ui');
-        
+
         $result->assertSuccessful();
     }
 

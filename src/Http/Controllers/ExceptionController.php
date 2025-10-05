@@ -2,11 +2,11 @@
 
 namespace Ihasan\DualAgentUI\Http\Controllers;
 
+use Ihasan\DualAgentUI\Services\ExceptionService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use Ihasan\DualAgentUI\Services\ExceptionService;
 
 class ExceptionController extends Controller
 {
@@ -39,7 +39,7 @@ class ExceptionController extends Controller
                 'total_exceptions' => count($exceptions),
                 'current_filter' => $filters['status'],
                 'environments' => $stats['environments'],
-            ]
+            ],
         ]);
     }
 
@@ -50,7 +50,7 @@ class ExceptionController extends Controller
     {
         $exception = $this->exceptionService->getExceptionById($id);
 
-        if (!$exception) {
+        if (! $exception) {
             abort(404, 'Exception not found');
         }
 
@@ -58,8 +58,8 @@ class ExceptionController extends Controller
             'exception' => $exception,
             'breadcrumbs' => [
                 ['label' => 'Exceptions', 'url' => route('dual-agent-ui.exceptions')],
-                ['label' => "Exception #{$id}", 'url' => null]
-            ]
+                ['label' => "Exception #{$id}", 'url' => null],
+            ],
         ]);
     }
 
@@ -83,7 +83,7 @@ class ExceptionController extends Controller
             'meta' => [
                 'total' => count($exceptions),
                 'filtered' => count($exceptions),
-            ]
+            ],
         ]);
     }
 
@@ -95,12 +95,12 @@ class ExceptionController extends Controller
         $request->validate([
             'status' => 'required|in:open,resolved,ignored',
             'assigned_to' => 'nullable|email',
-            'notes' => 'nullable|string|max:1000'
+            'notes' => 'nullable|string|max:1000',
         ]);
 
         // In a real application, this would update the database
         // For now, we'll just return a success response
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Exception status updated successfully',
@@ -108,8 +108,8 @@ class ExceptionController extends Controller
                 'id' => $id,
                 'status' => $request->get('status'),
                 'assigned_to' => $request->get('assigned_to'),
-                'updated_at' => now()->toISOString()
-            ]
+                'updated_at' => now()->toISOString(),
+            ],
         ]);
     }
 
@@ -138,8 +138,8 @@ class ExceptionController extends Controller
             'data' => [
                 'action' => $action,
                 'affected_count' => count($exceptionIds),
-                'exception_ids' => $exceptionIds
-            ]
+                'exception_ids' => $exceptionIds,
+            ],
         ]);
     }
 }

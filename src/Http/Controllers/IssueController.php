@@ -2,11 +2,11 @@
 
 namespace Ihasan\DualAgentUI\Http\Controllers;
 
+use Ihasan\DualAgentUI\Services\IssueService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use Ihasan\DualAgentUI\Services\IssueService;
 
 class IssueController extends Controller
 {
@@ -50,7 +50,7 @@ class IssueController extends Controller
                 'current_filter' => $filters['status'],
                 'types' => array_keys($stats['by_type']),
                 'priorities' => array_keys($stats['by_priority']),
-            ]
+            ],
         ]);
     }
 
@@ -61,7 +61,7 @@ class IssueController extends Controller
     {
         $issue = $this->issueService->getIssueById($id);
 
-        if (!$issue) {
+        if (! $issue) {
             abort(404, 'Issue not found');
         }
 
@@ -69,8 +69,8 @@ class IssueController extends Controller
             'issue' => $issue,
             'breadcrumbs' => [
                 ['label' => 'Issues', 'url' => route('dual-agent-ui.issues')],
-                ['label' => "Issue #{$id}", 'url' => null]
-            ]
+                ['label' => "Issue #{$id}", 'url' => null],
+            ],
         ]);
     }
 
@@ -95,7 +95,7 @@ class IssueController extends Controller
             'meta' => [
                 'total' => count($issues),
                 'filtered' => count($issues),
-            ]
+            ],
         ]);
     }
 
@@ -112,7 +112,7 @@ class IssueController extends Controller
             'environment' => 'required|string',
             'assigned_to' => 'nullable|email',
             'tags' => 'nullable|array',
-            'tags.*' => 'string|max:50'
+            'tags.*' => 'string|max:50',
         ]);
 
         // In a real application, this would create the issue in the database
@@ -135,7 +135,7 @@ class IssueController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Issue created successfully',
-            'data' => $issueData
+            'data' => $issueData,
         ], 201);
     }
 
@@ -151,7 +151,7 @@ class IssueController extends Controller
             'priority' => 'sometimes|in:low,medium,high,critical',
             'assigned_to' => 'nullable|email',
             'tags' => 'nullable|array',
-            'tags.*' => 'string|max:50'
+            'tags.*' => 'string|max:50',
         ]);
 
         // In a real application, this would update the issue in the database
@@ -163,8 +163,8 @@ class IssueController extends Controller
             'data' => [
                 'id' => $id,
                 'updated_at' => now()->toISOString(),
-                ...$request->only(['title', 'description', 'status', 'priority', 'assigned_to', 'tags'])
-            ]
+                ...$request->only(['title', 'description', 'status', 'priority', 'assigned_to', 'tags']),
+            ],
         ]);
     }
 
@@ -178,7 +178,7 @@ class IssueController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Issue deleted successfully'
+            'message' => 'Issue deleted successfully',
         ]);
     }
 
@@ -207,8 +207,8 @@ class IssueController extends Controller
             'data' => [
                 'action' => $action,
                 'affected_count' => count($issueIds),
-                'issue_ids' => $issueIds
-            ]
+                'issue_ids' => $issueIds,
+            ],
         ]);
     }
 }

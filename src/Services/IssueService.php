@@ -12,25 +12,25 @@ class IssueService
         $issues = $this->getMockIssues();
 
         // Apply filters
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $issues = array_filter($issues, function ($issue) use ($filters) {
                 return $issue['status'] === $filters['status'];
             });
         }
 
-        if (!empty($filters['type'])) {
+        if (! empty($filters['type'])) {
             $issues = array_filter($issues, function ($issue) use ($filters) {
                 return $issue['type'] === $filters['type'];
             });
         }
 
-        if (!empty($filters['assigned_to'])) {
+        if (! empty($filters['assigned_to'])) {
             $issues = array_filter($issues, function ($issue) use ($filters) {
                 return $issue['assigned_to'] === $filters['assigned_to'];
             });
         }
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = strtolower($filters['search']);
             $issues = array_filter($issues, function ($issue) use ($search) {
                 return strpos(strtolower($issue['title']), $search) !== false ||
@@ -43,11 +43,11 @@ class IssueService
             $priorityOrder = ['critical' => 4, 'high' => 3, 'medium' => 2, 'low' => 1];
             $aPriority = $priorityOrder[$a['priority']] ?? 0;
             $bPriority = $priorityOrder[$b['priority']] ?? 0;
-            
+
             if ($aPriority === $bPriority) {
                 return strtotime($b['updated_at']) - strtotime($a['updated_at']);
             }
-            
+
             return $bPriority - $aPriority;
         });
 
@@ -60,7 +60,7 @@ class IssueService
     public function getIssueById(int $id): ?array
     {
         $issues = $this->getMockIssues();
-        
+
         foreach ($issues as $issue) {
             if ($issue['id'] === $id) {
                 return $issue;
@@ -76,7 +76,7 @@ class IssueService
     public function getIssueStats(): array
     {
         $issues = $this->getMockIssues();
-        
+
         $stats = [
             'total' => count($issues),
             'open' => 0,
@@ -84,16 +84,16 @@ class IssueService
             'resolved' => 0,
             'ignored' => 0,
             'by_type' => [],
-            'by_priority' => []
+            'by_priority' => [],
         ];
 
         foreach ($issues as $issue) {
             $stats[$issue['status']]++;
-            
+
             if (empty($issue['assigned_to'])) {
                 $stats['unassigned']++;
             }
-            
+
             $stats['by_type'][$issue['type']] = ($stats['by_type'][$issue['type']] ?? 0) + 1;
             $stats['by_priority'][$issue['priority']] = ($stats['by_priority'][$issue['priority']] ?? 0) + 1;
         }
@@ -123,7 +123,7 @@ class IssueService
                 'created_at' => '2024-08-27 10:30:00',
                 'tags' => ['payment', 'queue', 'timeout'],
                 'occurrence_count' => 127,
-                'affected_users' => 45
+                'affected_users' => 45,
             ],
             [
                 'id' => 20,
@@ -141,7 +141,7 @@ class IssueService
                 'created_at' => '2024-09-30 09:15:00',
                 'tags' => ['registration', 'database', 'email'],
                 'occurrence_count' => 45,
-                'affected_users' => 23
+                'affected_users' => 23,
             ],
             [
                 'id' => 19,
@@ -159,7 +159,7 @@ class IssueService
                 'created_at' => '2024-09-30 11:20:00',
                 'tags' => ['file-system', 'cleanup', 'storage'],
                 'occurrence_count' => 23,
-                'affected_users' => 8
+                'affected_users' => 8,
             ],
             [
                 'id' => 15,
@@ -177,7 +177,7 @@ class IssueService
                 'created_at' => '2024-09-28 03:00:00',
                 'tags' => ['backup', 'scheduled-job', 'data-safety'],
                 'occurrence_count' => 4,
-                'affected_users' => 0
+                'affected_users' => 0,
             ],
             [
                 'id' => 9,
@@ -195,7 +195,7 @@ class IssueService
                 'created_at' => '2024-08-15 08:45:00',
                 'tags' => ['email', 'smtp', 'timeout'],
                 'occurrence_count' => 89,
-                'affected_users' => 67
+                'affected_users' => 67,
             ],
             [
                 'id' => 18,
@@ -213,7 +213,7 @@ class IssueService
                 'created_at' => '2024-08-28 12:00:00',
                 'tags' => ['batch-processing', 'notifications', 'queue'],
                 'occurrence_count' => 156,
-                'affected_users' => 78
+                'affected_users' => 78,
             ],
             [
                 'id' => 17,
@@ -231,7 +231,7 @@ class IssueService
                 'created_at' => '2024-09-27 14:30:00',
                 'tags' => ['middleware', 'type-error', 'staging'],
                 'occurrence_count' => 12,
-                'affected_users' => 3
+                'affected_users' => 3,
             ],
             [
                 'id' => 14,
@@ -249,7 +249,7 @@ class IssueService
                 'created_at' => '2024-08-28 12:30:00',
                 'tags' => ['email', 'batch-processing', 'notifications'],
                 'occurrence_count' => 134,
-                'affected_users' => 89
+                'affected_users' => 89,
             ],
             [
                 'id' => 16,
@@ -267,7 +267,7 @@ class IssueService
                 'created_at' => '2024-09-26 10:15:00',
                 'tags' => ['model', 'controller', 'class-not-found'],
                 'occurrence_count' => 67,
-                'affected_users' => 34
+                'affected_users' => 34,
             ],
             [
                 'id' => 4,
@@ -285,7 +285,7 @@ class IssueService
                 'created_at' => '2024-08-20 10:15:00',
                 'tags' => ['livewire', 'frontend', 'component'],
                 'occurrence_count' => 8,
-                'affected_users' => 5
+                'affected_users' => 5,
             ],
             [
                 'id' => 13,
@@ -303,8 +303,8 @@ class IssueService
                 'created_at' => '2024-09-25 08:00:00',
                 'tags' => ['queue', 'worker', 'timeout'],
                 'occurrence_count' => 23,
-                'affected_users' => 0
-            ]
+                'affected_users' => 0,
+            ],
         ];
     }
 }

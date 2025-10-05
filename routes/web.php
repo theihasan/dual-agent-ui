@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Ihasan\DualAgentUI\Http\Controllers\DashboardController;
 use Ihasan\DualAgentUI\Http\Controllers\ExceptionController;
 use Ihasan\DualAgentUI\Http\Controllers\IssueController;
 use Ihasan\DualAgentUI\Http\Middleware\HandleDualAgentInertiaRequests;
+use Illuminate\Support\Facades\Route;
 
 // Routes are automatically prefixed and middleware applied by ServiceProvider
 Route::middleware([HandleDualAgentInertiaRequests::class])
@@ -12,7 +12,7 @@ Route::middleware([HandleDualAgentInertiaRequests::class])
         // Dashboard routes
         Route::get('/', [DashboardController::class, 'index'])
             ->name('dual-agent-ui.dashboard');
-        
+
         Route::get('/requests', [DashboardController::class, 'requests'])
             ->name('dual-agent-ui.requests');
 
@@ -52,7 +52,7 @@ Route::middleware([HandleDualAgentInertiaRequests::class])
         Route::get('/exceptions', function () {
             return redirect()->route('dual-agent-ui.exceptions.index');
         });
-        
+
         Route::get('/issues', function () {
             return redirect()->route('dual-agent-ui.issues.index');
         });
