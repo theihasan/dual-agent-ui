@@ -12,11 +12,20 @@
           
           <!-- Time Period Selector -->
           <div class="flex items-center gap-2">
-            <Badge variant="outline" class="bg-blue-50 text-blue-700 border-blue-200">1H</Badge>
-            <Badge variant="outline" class="text-muted-foreground">24H</Badge>
-            <Badge variant="outline" class="text-muted-foreground">7D</Badge>
-            <Badge variant="outline" class="text-muted-foreground">14D</Badge>
-            <Badge variant="outline" class="text-muted-foreground">30D</Badge>
+            <Button 
+              v-for="period in timePeriods" 
+              :key="period.value"
+              :variant="selectedPeriod === period.value ? 'default' : 'outline'"
+              :class="[
+                'h-8 px-3 text-sm font-medium rounded-md transition-colors',
+                selectedPeriod === period.value 
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 border-blue-600' 
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              ]"
+              @click="selectedPeriod = period.value"
+            >
+              {{ period.label }}
+            </Button>
             <Button variant="outline" size="sm" class="ml-2">
               <Calendar class="h-4 w-4 mr-1" />
             </Button>
@@ -340,6 +349,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { 
   Activity, 
   Calendar, 
@@ -366,6 +376,17 @@ defineProps({
   stats: Object,
   recentActivities: Array,
 })
+
+// Time period selector state
+const selectedPeriod = ref('7D')
+
+const timePeriods = [
+  { label: '1H', value: '1H' },
+  { label: '24H', value: '24H' },
+  { label: '7D', value: '7D' },
+  { label: '14D', value: '14D' },
+  { label: '30D', value: '30D' }
+]
 
 const formatKey = (key) => {
   return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
