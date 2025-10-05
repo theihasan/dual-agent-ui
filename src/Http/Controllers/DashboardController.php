@@ -40,6 +40,13 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function issues(): Response
+    {
+        return Inertia::render('Issues', [
+            'issues' => $this->getIssues(),
+        ]);
+    }
+
     protected function getMetrics(): array
     {
         return [
@@ -60,6 +67,13 @@ class DashboardController extends Controller
     {
         return [
             // Mock data for now
+        ];
+    }
+
+    protected function getIssues(): array
+    {
+        return [
+            // Mock data for now - in real app this would fetch from database
         ];
     }
 }

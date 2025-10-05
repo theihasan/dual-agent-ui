@@ -75,7 +75,9 @@ class DualAgentUIServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        // Any custom registration logic here
+        // Register services
+        $this->app->singleton(\Ihasan\DualAgentUI\Services\ExceptionService::class);
+        $this->app->singleton(\Ihasan\DualAgentUI\Services\IssueService::class);
     }
 
 
