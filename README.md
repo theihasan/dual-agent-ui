@@ -13,7 +13,6 @@ A beautiful, Vue.js-powered analytics dashboard for monitoring your [Dual Agent]
 - Laravel 11.0+
 - [Laravel Nightwatch](https://nightwatch.laravel.com) installed and configured
 - [Dual Agent](https://github.com/theihasan/dual-agent) package installed
-- Node.js 18+ and npm (for asset compilation)
 
 ## Installation
 
@@ -22,57 +21,55 @@ A beautiful, Vue.js-powered analytics dashboard for monitoring your [Dual Agent]
    composer require theihasan/dual-agent-ui
    ```
 
-2. **Install Inertia.js Laravel adapter** (if not already installed):
-   ```bash
-   composer require inertiajs/inertia-laravel
-   ```
-
-3. **Run the package installer:**
+2. **Run the installer:**
    ```bash
    php artisan dual-agent-ui:install
    ```
 
-   This installer will automatically:
-   - Set up Inertia.js configuration
-   - Publish Vue.js dashboard components
-   - Configure Vite for Vue.js compilation
-   - Add necessary middleware
-   - Update your package.json with required dependencies
-
-4. **Install JavaScript dependencies and build assets:**
-   ```bash
-   npm install
-   npm run build
+3. **Access the dashboard:**
+   ```
+   https://your-app.com/agent-dashboard
    ```
 
-5. **Add the Inertia middleware** to your `bootstrap/app.php`:
-   ```php
-   ->withMiddleware(function (Middleware $middleware) {
-       $middleware->web(append: [
-           \App\Http\Middleware\HandleInertiaRequests::class,
-       ]);
-   })
-   ```
+**That's it!** No npm installation or asset compilation required. The package comes with pre-built Vue.js assets and is completely self-contained.
+
+## Features
+
+- ✅ **Zero Configuration**: Works out of the box without any npm setup
+- ✅ **Self-Contained**: All Vue/Inertia assets are pre-built and included
+- ✅ **Modern UI**: Beautiful, responsive dashboard built with Vue 3 and Inertia.js
+- ✅ **Real-time Metrics**: Live monitoring of your application performance
+- ✅ **Secure**: Built-in authentication and authorization
+- ✅ **Configurable**: Customize paths, middleware, and access control
 
 ## Configuration
 
-The package uses minimal configuration. You can optionally publish the config file:
+After installation, you can customize the package by editing the published config file:
 
 ```bash
-php artisan vendor:publish --tag="dual-agent-ui-config"
+php artisan vendor:publish --tag=dual-agent-ui-config
 ```
 
-This is the contents of the published config file:
+### Available Configuration Options
 
 ```php
+// config/dual-agent-ui.php
+
 return [
-    // Configuration options will be added here as the package evolves
+    // Dashboard access path
+    'path' => env('DUAL_AGENT_UI_PATH', 'agent-dashboard'),
+    
+    // Middleware applied to routes
+    'middleware' => ['web', 'auth'],
+    
+    // Authorization gate (optional)
+    'gate' => env('DUAL_AGENT_UI_GATE'),
 ];
 ```
 
 ## Usage
 
-Once installed, you can access the analytics dashboard at:
+Access the analytics dashboard at:
 
 ```
 https://your-app.com/agent-dashboard
@@ -110,23 +107,45 @@ return redirect()->back()->with('info', 'Here\'s some helpful information.');
 
 These messages will automatically appear in your dashboard interface.
 
-## Development
+## Authorization
 
-### Building Assets
+By default, the dashboard is accessible to all authenticated users. You can customize access control by defining a gate in your `AppServiceProvider`:
 
-For development:
-```bash
-npm run dev
+```php
+// app/Providers/AppServiceProvider.php
+
+use Illuminate\Support\Facades\Gate;
+
+public function boot()
+{
+    Gate::define('viewDualAgentUI', function ($user) {
+        return $user->isAdmin(); // Customize this logic
+    });
+}
 ```
 
-For production:
+Then update your config:
+
+```php
+// config/dual-agent-ui.php
+'gate' => 'viewDualAgentUI',
+```
+
+## Package Development
+
+This package uses a self-contained architecture. For package developers:
+
+### Building Assets (Package Development Only)
+
 ```bash
+# Install dependencies
+npm install
+
+# Build for production
 npm run build
 ```
 
-### Customizing Styles
-
-The dashboard uses Vue.js scoped styles. You can customize the appearance by modifying the `<style scoped>` sections in the published Vue components.
+Built assets are committed to the repository so end users don't need npm.
 
 ## Testing
 
@@ -134,42 +153,18 @@ The dashboard uses Vue.js scoped styles. You can customize the appearance by mod
 composer test
 ```
 
-The package includes comprehensive tests covering:
-- Service provider functionality
-- Route registration and accessibility
-- Controller responses and data validation
-- Inertia.js integration
-- Installation process
-- Vue.js component structure
-
 ## Common Issues
 
-### Dashboard Shows Blank Page
+### Dashboard Shows 404
 
-Ensure that:
-1. Inertia.js is properly installed: `composer require inertiajs/inertia-laravel`
-2. Assets are built: `npm install && npm run build`
-3. Inertia middleware is registered in `bootstrap/app.php`
-
-### Assets Not Loading
-
-Make sure your `vite.config.js` includes the Vue plugin:
-
-```javascript
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
-
-export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-        vue(),
-    ],
-});
+Ensure the package is properly installed:
+```bash
+php artisan dual-agent-ui:install
 ```
+
+### Access Denied
+
+Check your middleware configuration in `config/dual-agent-ui.php`. By default, the `auth` middleware is applied.
 
 ### Installation Fails
 
